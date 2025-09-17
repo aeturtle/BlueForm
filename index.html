@@ -98,52 +98,54 @@
   </div>
 </div>
 
+
+  
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiMkVMbX8jVA2EYZDKHMuihfFp0WpazeyQCGO6PFdFKDE7JXTpMnQvNmgf9Ssd7YficQ/exec";
 
 // auto-fill date with today
 (function(){
-  const t=new Date();
-  const yyyy=t.getFullYear(), mm=String(t.getMonth()+1).padStart(2,'0'), dd=String(t.getDate()).padStart(2,'0');
-  document.getElementById('date').value=`${yyyy}-${mm}-${dd}`;
+  const t = new Date();
+  const yyyy = t.getFullYear();
+  const mm = String(t.getMonth()+1).padStart(2,'0');
+  const dd = String(t.getDate()).padStart(2,'0');
+  document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
 })();
 
-// ensure only one checkbox
-oneway.addEventListener('change',()=>{ if(oneway.checked) reentry.checked=false; });
-reentry.addEventListener('change',()=>{ if(reentry.checked) oneway.checked=false; });
-
-function sendForm(type){
-  const payload={
-    studentName:studentName.value,
-    section:section.value,
-    studentNo:studentNo.value,
-    reason:explain.value,
-    parentName:parentName.value,
-    parentContact:parentContact.value,
-    exitType:type,
-    exitTime:exitTime.value,
-    reentryTime:reentryTime.value,
-    guardId:guardId.value
+function sendForm(){
+  const payload = {
+    studentName: document.getElementById("studentName").value,
+    studentNo: document.getElementById("studentNo").value,
+    section: document.getElementById("section").value,
+    date: document.getElementById("date").value,
+    timeOfExit: document.getElementById("exitTime").value,
+    timeOfReEntry: document.getElementById("reentryTime").value,
+    reason: document.getElementById("explain").value,
+    parentName: document.getElementById("parentName").value,
+    parentsContactNo: document.getElementById("parentContact").value,
+    explanation: document.getElementById("explain").value
   };
-  fetch(SCRIPT_URL,{
-    method:"POST",
-    body:JSON.stringify(payload),
-    headers:{"Content-Type":"application/json"}
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" }
   })
-  .then(r=>r.json())
-  .then(d=>alert("Saved! Row #"+d.row))
-  .catch(e=>alert("Error: "+e));
+  .then(r => r.json())
+  .then(d => alert("Saved! Row #" + d.row))
+  .catch(e => alert("Error: " + e));
 }
 
-submitExit.addEventListener('click',()=>sendForm("exit"));
-submitReentry.addEventListener('click',()=>sendForm("reentry"));
-clearBtn.addEventListener('click',()=>{
-  document.querySelectorAll('input[type=text],input[type=tel],textarea').forEach(i=>i.value='');
-  exitTime.value=''; reentryTime.value=''; oneway.checked=false; reentry.checked=false;
+document.getElementById("submitExit").addEventListener("click", sendForm);
+document.getElementById("submitReentry").addEventListener("click", sendForm);
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  document.querySelectorAll("input[type=text], input[type=tel], input[type=date], input[type=datetime-local], textarea")
+    .forEach(i => i.value = "");
 });
 </script>
 </body>
-
 </html>
+
 
 
