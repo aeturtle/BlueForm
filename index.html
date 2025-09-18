@@ -101,7 +101,7 @@
 
   
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE5jCpdgpw3jE68KLIYEs0EaSTaZY3XkCmij7iSdcHvjgCELyvIdkh-xpk5jfaUyLWhw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiBOLey0eVTSano69YW3TK6UZTjTRr8Wr92wGUDQkq5QA7pr9HONx67JSrCUkCz82EpA/exec";
 
 // auto-fill date with today
 (function(){
@@ -126,14 +126,17 @@ function sendForm(){
     explanation: document.getElementById("explain").value
   };
 
-  fetch(SCRIPT_URL, {
-  method: "POST",
-  mode: "cors",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload)
-})
+    fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
   })
-  .then(r => r.json())
+  .then(async r => {
+    const text = await r.text();       // 👈 see the raw response first
+    console.log("Raw response:", text);
+    return JSON.parse(text);
+  })
   .then(d => alert("Saved! Row #" + d.row))
   .catch(e => alert("Error: " + e));
 }
@@ -148,6 +151,7 @@ document.getElementById("clearBtn").addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
