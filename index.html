@@ -101,7 +101,7 @@
 
   
 <script>
-const SCRIPT_URL = "https://corsproxy.io/?https://script.google.com/macros/s/AKfycbxE5jCpdgpw3jE68KLIYEs0EaSTaZY3XkCmij7iSdcHvjgCELyvIdkh-xpk5jfaUyLWhw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE5jCpdgpw3jE68KLIYEs0EaSTaZY3XkCmij7iSdcHvjgCELyvIdkh-xpk5jfaUyLWhw/exec";
 
 // auto-fill date with today
 (function(){
@@ -127,9 +127,11 @@ function sendForm(){
   };
 
   fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { "Content-Type": "application/json" }
+  method: "POST",
+  mode: "cors",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+})
   })
   .then(r => r.json())
   .then(d => alert("Saved! Row #" + d.row))
